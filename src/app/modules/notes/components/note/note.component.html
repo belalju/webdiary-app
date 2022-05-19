@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <h4 class="modal-title">Create New </h4>
+    <button type="button" class="btn btn-danger close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            Note
+          </div>
+          <div class="card-body">
+            <form [formGroup]="noteForm">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="title">Category</label>
+                  <select class="form-control" id="categoryId" formControlName="categoryId">
+                    <option *ngFor="let category of categoryList" [value]="category.id">{{category.categoryName}}</option>
+                  </select>  
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="title">Title</label>
+                  <input type="hidden" class="form-control" id="id" placeholder="id" formControlName="id">
+                  <input type="text" class="form-control" id="title" placeholder="Title" formControlName="title"
+                  [ngClass]="{'is-invalid': submitted && frm.title.errors}"
+                  >
+                  <div *ngIf="submitted && frm.title.errors" class="invalid-feedback">
+                    <div *ngIf="frm.title.errors.required">Title required.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="content">Content</label>
+                    <input type="text" class="form-control" id="content" placeholder="Content" formControlName="content"
+                    [ngClass]="{'is-invalid': submitted && frm.content.errors}"
+                    >
+                    <div *ngIf="submitted && frm.content.errors" class="invalid-feedback">
+                      <div *ngIf="frm.content.errors.required">Content required.</div>
+                    </div>
+                  </div>
+              </div>              
+              <button class="btn btn-primary" (click)="save()">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="dismiss()">Close</button>
+  </div>
+  
+  
+  
+  
