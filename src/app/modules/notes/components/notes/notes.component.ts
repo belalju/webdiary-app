@@ -14,6 +14,7 @@ export class NotesComponent implements OnInit {
     title = 'Welcome Back';
     noteModel: NoteModel;
     noteModelList: NoteModel[] = [];
+    search: string ='';
 
     constructor(
         private modalService: NgbModal, 

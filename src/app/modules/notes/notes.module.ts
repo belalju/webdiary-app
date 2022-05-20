@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { CategoryComponent } from "./components/category/category.component";
 import { NoteComponent } from "./components/note/note.component";
+import { FilterPipe } from "./components/notes/filter.pipe";
 import { NotesComponent } from "./components/notes/notes.component";
 import { NotesRoutingModule } from "./notes.routing";
 import { CategoryService } from "./services/category.service";
@@ -24,7 +25,8 @@ import { NoteService } from "./services/note.service";
     declarations: [
         CategoryComponent,
         NotesComponent,
-        NoteComponent
+        NoteComponent,
+        FilterPipe
     ],
     exports: [],
 })

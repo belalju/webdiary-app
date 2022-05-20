@@ -10,6 +10,7 @@
           Note List
         </div>
         <div class="card-body">
+          <input type="search" [(ngModel)]="search" class="form-control" placeholder="Search">
           <table class="table table-striped">
             <thead>
             <tr>
@@ -22,7 +23,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let note of noteModelList; index as i">
+            <!-- <tr *ngFor="let note of noteModelList; index as i"> -->
+            <tr *ngFor="let note of (noteModelList | filter:search) as folder; index as i">
               <th scope="row">{{ i + 1 }}</th>
               <td>
                 {{ note.categoryName }}
