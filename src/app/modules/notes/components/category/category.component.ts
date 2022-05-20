@@ -1,37 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
 import { CategoryModel } from "../../models/category.model";
 import { CategoryService } from "../../services/category.service";
-
-interface Country {
-  name: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    area: 9596960,
-    population: 1409517397
-  }
-];
 
 @Component({
   selector: 'category-modal',
@@ -40,7 +12,6 @@ const COUNTRIES: Country[] = [
 
 export class CategoryComponent implements OnInit {
   @ViewChild('content') content: any;
-  countries = COUNTRIES;
 
   closeResult: string | undefined;
 
@@ -52,7 +23,8 @@ export class CategoryComponent implements OnInit {
   constructor(
     private modal: NgbModal,
     private fromBuilder: FormBuilder,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private toastr: ToastrService
   ) { }
 
   get frm() { return this.categoryForm.controls; }
@@ -92,12 +64,24 @@ export class CategoryComponent implements OnInit {
 
     this.categoryService.save(this.categoryModel).subscribe({
       complete:() => {
+        this.clearForm();
+        this.toastr.success('Category saved successfully', 'Category');
         this.getCategoryList();
       },
       error:(e) => {
         console.log(e);
+        this.toastr.error(e, 'Category');
       }
     });
+  }
+
+  clearForm(){
+    this.categoryForm.patchValue({
+      id: 0,
+      categoryName: '',
+      statusId: 1,
+    });
+    this.submitted = false;
   }
 
   getCategoryList(){

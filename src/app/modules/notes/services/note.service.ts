@@ -25,6 +25,15 @@ export class NoteService {
     }
 
     save(noteModel: NoteModel): Observable<NoteModel> {
-        return this.httpClient.post<NoteModel>(this.rootUrl, JSON.stringify(noteModel), this.httpOptions);
+        if(noteModel.id == 0){
+            return this.httpClient.post<NoteModel>(this.rootUrl, JSON.stringify(noteModel), this.httpOptions);
+        } else {
+            return this.httpClient.post<NoteModel>(this.rootUrl + '/update/' + noteModel.id, JSON.stringify(noteModel), this.httpOptions);
+        }
+        
+    }
+
+    delete(noteId: number): Observable<NoteModel> {
+        return this.httpClient.post<NoteModel>(this.rootUrl + '/delete/' + noteId, this.httpOptions);
     }
 }

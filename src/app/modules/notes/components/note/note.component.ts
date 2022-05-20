@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from "ngx-toastr";
 import { CategoryModel } from "../../models/category.model";
 import { NoteModel } from "../../models/note.model";
 import { CategoryService } from "../../services/category.service";
@@ -25,7 +26,8 @@ export class NoteComponent implements OnInit {
     private modal: NgbModal,
     private fromBuilder: FormBuilder,
     private categoryService: CategoryService,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private toastr: ToastrService
   ) { }
 
   get frm() { return this.noteForm.controls; }
@@ -64,13 +66,25 @@ export class NoteComponent implements OnInit {
     console.log(this.noteModel);
     this.noteService.save(this.noteModel).subscribe({
       complete:() => {
-       // this.getCategoryList();
-       this.dismiss();
+        this.clearForm();
+        this.toastr.success('Note saved successfully', 'Note');
+        this.dismiss();
       },
       error:(e) => {
         console.log(e);
+        this.toastr.error(e, 'Note');
       }
     });
+  }
+
+  clearForm(){
+    this.noteForm.patchValue({
+      id: 0,
+      title: '',
+      content: '',
+      categoryId: 1,
+    });
+    this.submitted = false;
   }
 
   getCategoryList(){
