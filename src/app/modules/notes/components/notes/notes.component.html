@@ -1,7 +1,8 @@
-<h1>{{title}}</h1>
+<h1>{{title}}, {{userName}}</h1>
 <!-- <category-modal #myModal></category-modal> -->
 <button class="btn btn-lg btn-outline-info" (click)="openNote()">Add Note</button>
 <button class="btn btn-lg btn-outline-primary" (click)="open()">Manage Categories</button>
+<button class="btn btn-lg btn-outline-primary" (click)="onLogout()">Logout</button>
 
 <div class="row">
     <div class="col-sm-12">
@@ -13,7 +14,8 @@
           <div class="row">
             <div class="form-group col-md-4">
               <label for="title">Category</label>
-              <select class="form-control" [(ngModel)]="categoryId" name="categoryId">
+              <select class="form-control" [(ngModel)]="categoryId" name="categoryId" (change)="onSelectCategory($event)">
+                <option [value]="0">All</option>
                 <option *ngFor="let category of categoryList" [value]="category.id">{{category.categoryName}}</option>
               </select>  
             </div>
@@ -37,7 +39,7 @@
                 </thead>
                 <tbody>
                 <!-- <tr *ngFor="let note of noteModelList; index as i"> -->
-                <tr *ngFor="let note of (noteModelList | filter:search:categoryId) as folder; index as i">
+                <tr *ngFor="let note of (noteModelList | filter:search) as folder; index as i">
                   <th scope="row">{{ i + 1 }}</th>
                   <td>
                     {{ note.categoryName }}

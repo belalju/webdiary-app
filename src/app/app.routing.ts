@@ -5,12 +5,12 @@ import { AppComponent } from './app.component';
 // Import Containers
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: AppComponent
-      },
+    // {
+    //     path: '',
+    //     component: AppComponent
+    //   },
       {
-        path: 'notes',
+        path: '',
         loadChildren: () => import('./modules/notes/notes.module').then(m => m.NotesModule)
       } 
       

@@ -5,6 +5,7 @@ import { CategoryModel } from "../../models/category.model";
 import { NoteModel } from "../../models/note.model";
 import { CategoryService } from "../../services/category.service";
 import { NoteService } from "../../services/note.service";
+import { TokenStorageService } from "../../services/token-storage.service";
 import { CategoryComponent } from "../category/category.component";
 import { NoteComponent } from "../note/note.component";
 
@@ -15,22 +16,25 @@ import { NoteComponent } from "../note/note.component";
 export class NotesComponent implements OnInit {
 
     title = 'Welcome Back';
+    userName: string = '';
     noteModel: NoteModel;
     noteModelList: NoteModel[] = [];
     search: string ='';
-    categoryId: number = 1;
+    categoryId: number = 0;
     categoryList: CategoryModel[] = [];
 
     constructor(
         private modalService: NgbModal, 
         private noteService: NoteService,
         private categoryService: CategoryService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private tokenStorageService: TokenStorageService
     ){}
 
     ngOnInit() {
         this.getNoteList();
         this.getCategoryList();
+        this.userName = this.tokenStorageService.getUsername();
     }
 
     getNoteList(){
@@ -46,6 +50,13 @@ export class NotesComponent implements OnInit {
           this.categoryList = response;
         });
     }
+
+    getNoteListByCategory(categoryId: number){
+      this.noteService.getByCategory(categoryId).subscribe(response => 
+      {
+          this.noteModelList = response;
+      });
+  }
 
     open() {
         const modalRef = this.modalService.open(CategoryComponent, { size: 'lg' });
@@ -86,6 +97,20 @@ export class NotesComponent implements OnInit {
           this.toastr.error(e, 'Note');
         }
       });
+    }
+
+    onSelectCategory(event: any){
+      let categoryId = event.target.value;
+      categoryId = Number(categoryId);
+      if(categoryId === 0){
+        this.getNoteList();
+      } else {
+        this.getNoteListByCategory(categoryId);
+      }
+    }
+
+    onLogout(){
+      this.tokenStorageService.signOut();
     }
 
 }

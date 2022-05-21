@@ -24,6 +24,10 @@ export class NoteService {
         return this.httpClient.get<NoteModel[]>(this.rootUrl);
     }
 
+    getByCategory(categoryId: number): Observable<NoteModel[]> {
+        return this.httpClient.get<NoteModel[]>(this.rootUrl + '/byCategory/' + categoryId);
+    }
+
     save(noteModel: NoteModel): Observable<NoteModel> {
         if(noteModel.id == 0){
             return this.httpClient.post<NoteModel>(this.rootUrl, JSON.stringify(noteModel), this.httpOptions);
